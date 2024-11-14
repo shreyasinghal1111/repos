@@ -10,18 +10,7 @@ export interface GitHubRepo {
     avatar_url: string
   }
   created_at: string
-id: number
-name: string
-description: string
-owner: {
-  login: string
-  avatar_url: string
-}
-stargazers_count: number
-pushed_at: string
-open_issues_count: number
-created_at: string
-updated_at: string
+  updated_at: string
 }
 
 export interface RepoStats {
@@ -35,6 +24,19 @@ export interface GitHubSearchResponse {
   total_count: number
 }
 
+export interface GitHubRepo {
+id: number
+name: string
+description: string
+stargazers_count: number
+open_issues_count: number
+pushed_at: string
+owner: {
+login: string
+avatar_url: string
+}
+created_at: string
+updated_at: string
 }
 
 export interface GitHubResponse {

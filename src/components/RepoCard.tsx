@@ -17,7 +17,8 @@ export const RepoCard = ({ repo }: { repo: GitHubRepo }) => {
       const response = await fetch(`https://api.github.com/repos/${repo.owner.login}/${repo.name}/stats/commit_activity`)
       return response.json()
     },
-    enabled: showChart && selectedOption === 'commits'
+    enabled: showChart && selectedOption === 'commits',
+    gcTime: 0,
   })
 
   const { data: codeFrequencyData } = useQuery({
@@ -41,12 +42,10 @@ export const RepoCard = ({ repo }: { repo: GitHubRepo }) => {
     let chartData = []
   
     if (selectedOption === 'commits') {
-      // Ensure commitData is an array and has data
       chartData = Array.isArray(commitData) ? 
 
         commitData.map((week: { week: number; total: number }) => [week.week * 1000, week.total]) : []
     } else {
-      // Ensure codeFrequencyData is an array and has data
       chartData = Array.isArray(codeFrequencyData) ?
         codeFrequencyData.map((week: [number, number, number]) => [
           week[0] * 1000,

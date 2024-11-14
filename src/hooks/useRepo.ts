@@ -1,6 +1,11 @@
 import { useQuery } from '@tanstack/react-query'
-import { githubApi } from '../services/githubApi'
+
+import { useGithubApi } from '../services/githubApi'
 import { useState } from 'react'
+
+export const useRepos = (page: number) => {
+  return useGithubApi.useRepos(page)
+}
 
 export const useRepo = () => {
   const [currentPage, setCurrentPage] = useState(1)
@@ -12,11 +17,11 @@ export const useRepo = () => {
     error
   } = useQuery({
     queryKey: ['repos', currentPage],
-    queryFn: () => githubApi.getRepos(currentPage),
+    queryFn: () => useGithubApi.useRepos(currentPage),
     staleTime: Infinity
   })
 
-  const totalPages = Math.ceil((data?.total_count || 0) / pageSize)
+  const totalPages = Math.ceil((data?.data?.total_count || 0) / pageSize)
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
@@ -24,7 +29,7 @@ export const useRepo = () => {
   }
 
   return {
-    repos: data?.items || [],
+    repos: data?.data?.items || [],
     isLoading,
     error,
     currentPage,
