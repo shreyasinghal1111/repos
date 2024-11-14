@@ -9,7 +9,13 @@ export const StatsDropdown = ({ owner, repo }: { owner: string, repo: string }) 
 
   const { data: stats, isLoading } = useQuery({
     queryKey: ['detailedStats', owner, repo],
-    queryFn: () => githubApi.getDetailedStats(owner, repo),
+      queryFn: () => Promise.all([
+        githubApi.getCodeFrequency(owner, repo),
+        githubApi.getCommitActivity(owner, repo)
+      ]).then(([codeFrequency, commitActivity]) => ({
+        codeFrequency,
+        commitActivity
+      })),
     staleTime: 60000
   })
 
